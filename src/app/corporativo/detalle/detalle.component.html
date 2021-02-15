@@ -1,0 +1,195 @@
+<section id="users-edit" class="users-edit">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body">
+              <!-- Nav-tabs -->
+              <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs justify-content-left">
+                <li [ngbNavItem]="1">
+                  <a ngbNavLink class="nav-link d-flex align-items-center">
+                    <i class="ft-file mr-1"></i>
+                    <span class="d-none d-sm-block">Datos Generales</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <!-- Account content starts -->
+                    <!-- <div  class="mt-2" id="account">
+
+                      <div class="media">
+                        <img [src]="corporativo?.S_LogoURL" alt="user edit avatar"
+                          class="users-avatar-shadow avatar mr-3 rounded-circle" height="64" width="64">
+                        <div class="media-body">
+                          <h4>{{corporativo?.S_NombreCorto}}</h4>
+                        </div>
+                      </div>
+
+                      <form [formGroup]="reactiveFormCorporativo">
+                        <div class="row">
+                            <div class="col-12 col-md-4 form-group">
+                              <div class="controls">
+                                <label for="users-edit-username">Nombre corto</label>
+                                <input type="text" formControlName="S_NombreCorto" id="S_NombreCorto" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                              <div class="controls">
+                                <label for="users-edit-name">Nombre completo</label>
+                                <input type="text" formControlName="S_NombreCompleto" class="form-control">
+                              </div>
+                            </div>
+  
+                            <div class="col-12 col-md-4 form-group">
+                              <div class="controls">
+                                <label for="users-edit-role">Status</label>
+                                <select formControlName="S_Activo" class="form-control">
+                                  <option value="1">Activo</option>
+                                  <option value="14">Inactivo</option>
+                                </select>
+                              </div>
+                            </div>
+                            
+                            <div class="col-12 col-md-4 form-group">
+                                <div class="controls">
+                                  <label for="users-edit-email">Fecha de incorporación</label>
+                                  <div class="input-group">
+                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" formControlName="D_FechaIncorporacion" ngbDatepicker
+                                      #d2="ngbDatepicker">
+                                    <div class="input-group-append">
+                                      <div class="input-group-text" (click)="d2.toggle()">
+                                        <i class="fa fa-calendar" style="cursor: pointer;"></i>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-md-4 form-group">
+                              <div class="controls">
+                                <label for="users-edit-company">Url del sistema</label>
+                                <input type="text" formControlName="S_SystemUrl" class="form-control">
+                              </div>
+                            </div>
+  
+                          <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                            <button type="button" (click)="return()" class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2">{{btnRegresar}}</button>
+                            <button type="reset" class="btn btn-primary" (click)="changeStatus()">{{btnEditar}}</button>
+                          </div>
+                        </div>
+                      </form>
+
+                    </div> -->
+                    <app-form *ngIf="corporativo" [corporativo]="corporativo" (mensaje)="mensaje($event)"></app-form>
+                    <!-- Account content ends -->
+                  </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                  <a ngbNavLink class="nav-link d-flex align-items-center">
+                    <i class="ft-user-plus mr-1"></i>
+                    <span class="d-none d-sm-block">Contactos</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <!-- Information content starts -->
+                    <div class="mt-2" id="information">
+                      <!-- Information form starts -->
+                      <div class="media">
+                        <img [src]="corporativo?.S_LogoURL" alt="user edit avatar"
+                          class="users-avatar-shadow avatar mr-3 rounded-circle" height="64" width="64">
+                        <div class="media-body">
+                          <h4>{{corporativo?.S_NombreCorto}}</h4>
+                        </div>
+                      </div>
+                      <!-- Media object ends -->
+                      <div id="table-responsive" class="table-responsive">
+                        <table class="table table-sm m-0">
+                          <thead>
+                            <tr>
+                              <th>NOMBRE</th>
+                              <th>PUESTO</th>
+                              <th>TELÉFONO</th>
+                              <th>CELULAR</th>
+                              <th>EMAIL</th>
+                              <th>OBSERVACIONES</th>
+                              <th class="text-center">ACCIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody *ngFor="let item of listContactos | async">
+                            <tr>
+                              <th class="fw-400">{{item.S_Nombre}}</th>
+                              <th class="fw-400">{{item.S_Puesto}}</th>
+                              <th class="fw-400">{{item.N_TelefonoFijo}}</th>
+                              <th class="fw-400">{{item.N_TelefonoMovil}}</th>
+                              <th class="fw-400">{{item.S_Email}}</th>
+                              <th class="fw-400">{{item.S_Comentarios}}</th>
+                              <th class="fw-400 text-center">
+                                <a (click)="formContacto(item)" class="options" placement="bottom" ngbTooltip="Editar"><i class="ft-edit text-info"></i></a>
+                                <a (click)="deleteContacto(item.id)" class="options" placement="bottom" ngbTooltip="Eliminar"><i class="ft-trash-2 text-danger"></i></a>
+                              </th>
+                            </tr>
+                            <tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Account form starts -->
+                      <form [formGroup]="reactiveFormContacto" class="mt-5"  (ngSubmit)="saveContacto()">
+                        <div class="row">
+                            <div class="col-12 col-md-3 form-group">
+                              <div class="controls">
+                                <label for="users-edit-username">Nombre</label>
+                                <input type="text" formControlName="S_Nombre" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-3 form-group">
+                              <div class="controls">
+                                <label for="users-edit-name">Puesto</label>
+                                <input type="text" formControlName="S_Puesto" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6 form-group">
+                              <div class="controls">
+                                <label for="users-edit-name">Comentarios</label>
+                                <input type="text" formControlName="S_Comentarios" class="form-control">
+                              </div>
+                            </div>
+
+                            <div class="col-12 col-md-3 form-group">
+                              <div class="controls">
+                                <label for="users-edit-name">Teléfono fijo</label>
+                                <input type="text" formControlName="N_TelefonoFijo" class="form-control">
+                              </div>
+                            </div>
+
+                            <div class="col-12 col-md-3 form-group">
+                                <div class="controls">
+                                  <label for="users-edit-email">Teléfono movil</label>
+                                  <input type="text" formControlName="N_TelefonoMovil" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-md-3 form-group">
+                              <div class="controls">
+                                <label for="users-edit-company">Email</label>
+                                <input type="text" formControlName="S_Email" class="form-control">
+                              </div>
+                            </div>
+  
+                          <div class="col-12 col-md-3 mt-3">
+                            <button type="submit" class="btn btn-secondary mb-2 mb-sm-0 mr-sm-2">{{btnContacto}}</button>
+                          </div>
+                        </div>
+                      </form>
+                      <!-- Information form ends -->
+                    </div>
+                    <!-- Information content ends -->
+                  </ng-template>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div [ngbNavOutlet]="nav"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
