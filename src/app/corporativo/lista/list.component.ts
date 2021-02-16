@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatatableComponent, ColumnMode } from "@swimlane/ngx-datatable";
-import { usersListData } from "./data/users-list.data";
 import { CorporativoService } from '../../shared/services/corporativo.service';
 import { Router } from "@angular/router";
 
@@ -16,7 +15,7 @@ export class ListComponent implements OnInit {
   @ViewChild(DatatableComponent) table: DatatableComponent;
   reactiveForm: FormGroup;
   // row data
-  public rows = usersListData;
+  public rows = [];
   public ColumnMode = ColumnMode;
   public limitRef = 10;
 
@@ -29,14 +28,6 @@ export class ListComponent implements OnInit {
     { name: "ASIGNADO A", prop: "S_DBName" },
     { name: "ESTATUS", prop: "S_Activo" },
     { name: "ACCIONES", prop: "Actions" },
-    // { name: "ID", prop: "ID" },
-    // { name: "Username", prop: "Username" },
-    // { name: "Name", prop: "Name" },
-    // { name: "Last Activity", prop: "Last Activity" },
-    // { name: "Verified", prop: "Verified" },
-    // { name: "Role", prop: "Role" },
-    // { name: "Status", prop: "Status" },
-    // { name: "Actions", prop: "Actions" },
   ];
 
   // private
@@ -45,9 +36,9 @@ export class ListComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private _corporativoService:CorporativoService,
     private router: Router) {
-    this.tempData = usersListData || [];
+    this.tempData = [];
     this.formFilter();
-    // this.getCorporativos();
+    this.getCorporativos();
   }
 
   formFilter(){
@@ -60,9 +51,10 @@ export class ListComponent implements OnInit {
 
   getCorporativos(){
     this._corporativoService.getCorporativos().subscribe(res=>{
-      console.log(res.data);
       this.rows = res.data;
       this.tempData = res.data;
+      const element:HTMLElement = document.getElementById('ngx-datatable-filter') as HTMLElement;
+      element.click();
     })
   }
   
@@ -96,7 +88,6 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {}
 
   goDetalleCorporativo(id){
-    console.log(id);
     this.router.navigate(['corporativos/detalle', id]);
   }
 }
